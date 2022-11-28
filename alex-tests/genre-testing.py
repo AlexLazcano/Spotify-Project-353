@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import math
+import os
 from scipy import stats
 import matplotlib.pyplot as plt
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
@@ -16,12 +17,14 @@ def main():
                'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
                 'duration_ms', 'time_signature',
                'popularity_scores']
+               
 
 
     # clean genres
     # songs_data['genre'].drop_duplicates().sort_values().to_csv('data_genres.csv')
     
     songs_data['genre'].to_csv('data_genres_orignal.csv')
+    # TODO: make k-pop and pop mutually exclusive
     regex = r'(k-pop|filmi|acoustic|corrido|bollywood|electro swing|cumbia|edm|instrumental|funk|blues|country|lo-fi|punk|folk|jazz|trap|soundtrack|reggae|salsa|bass|rap|soul|anime|ambient|metal|hip hop|country|classical|alt z|rock|r&b|rnb|indie|pop|disco|latin|alternative)'
     genres_data = songs_data['genre'].str.extract(regex,re.IGNORECASE, expand=False)
     all_genres_data = songs_data['genre'].str.extractall(regex,re.IGNORECASE)
@@ -37,9 +40,34 @@ def main():
     all_genres_data = all_genres_data.reset_index().set_index('level_0')['given-genre']
     print("songs identified (with duplicate genres)",all_genres_data.count())
     joined = songs_data.join(all_genres_data, how='inner')
-    joined = joined[['song_title', 'genre', 'given-genre']]
+    # joined = joined[['song_title', 'genre', 'given-genre']]
     # joined.to_csv('given-genre.csv')
 
+    generated_genres = all_genres_data.drop_duplicates().values
+    print(generated_genres)
+
+    # generate graphs of each song feature for each genre
+    for genre in generated_genres:
+        genre_songs = joined[joined['given-genre'] == genre]
+        
+        popularity = genre_songs['popularity_scores']
+        print("{} avg mean: {}".format(genre,popularity.mean()))
+        for col in numeric_columns: 
+            
+            plt.figure()
+            plt.plot(genre_songs[col], popularity, '.')
+            plt.title('genre: {}. {} vs popularity'.format(genre, col))
+            exists = os.path.exists('../images/{}'.format(genre))
+            if exists == False:
+                os.mkdir('../images/{}'.format(genre))
+            
+            plt.savefig('../images/{}/{}'.format(genre,col))
+            plt.close()
+
+    mean = joined.groupby('given-genre').mean()
+    print(mean.sort_values('popularity_scores', ascending=False))
+
+        
     # print(empty.value_counts().to_csv('empty.csv'))
     # print(notEmpty)
     # empty.to_csv('empty.csv')
