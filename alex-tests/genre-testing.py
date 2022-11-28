@@ -47,26 +47,31 @@ def main():
     print(generated_genres)
 
     # generate graphs of each song feature for each genre
-    for genre in generated_genres:
-        genre_songs = joined[joined['given-genre'] == genre]
+    # for genre in generated_genres:
+    #     genre_songs = joined[joined['given-genre'] == genre]
         
-        popularity = genre_songs['popularity_scores']
-        print("{} avg mean: {}".format(genre,popularity.mean()))
-        for col in numeric_columns: 
+    #     popularity = genre_songs['popularity_scores']
+    #     for col in numeric_columns: 
             
-            plt.figure()
-            plt.plot(genre_songs[col], popularity, '.')
-            plt.title('genre: {}. {} vs popularity'.format(genre, col))
-            exists = os.path.exists('../images/{}'.format(genre))
-            if exists == False:
-                os.mkdir('../images/{}'.format(genre))
+    #         plt.figure()
+    #         plt.plot(genre_songs[col], popularity, '.')
+    #         # plt.hist(genre_songs[col], 10)
+    #         plt.title('genre: {}. {} vs popularity'.format(genre, col))
+    #         exists = os.path.exists('../images/{}'.format(genre))
+    #         if exists == False:
+    #             os.mkdir('../images/{}'.format(genre))
             
-            plt.savefig('../images/{}/{}'.format(genre,col))
-            plt.close()
+    #         plt.savefig('../images/{}/{}'.format(genre,col))
+    #         plt.close()
 
     mean = joined.groupby('given-genre').mean()
     print(mean.sort_values('popularity_scores', ascending=False))
 
+
+    melt = joined[['given-genre', 'danceability']].melt()
+    print(melt.dtypes)
+    posthoc = pairwise_tukeyhsd(melt['value'], melt['variable'], alpha=0.05)
+    print(posthoc)
         
     # print(empty.value_counts().to_csv('empty.csv'))
     # print(notEmpty)
