@@ -23,26 +23,33 @@ def main():
     # clean genres
     # songs_data['genre'].drop_duplicates().sort_values().to_csv('data_genres.csv')
     
-    songs_data['genre'].to_csv('data_genres_orignal.csv')
+    # songs_data['genre'].to_csv('data_genres_orignal.csv')
+    
     # TODO: make k-pop and pop mutually exclusive
     regex = r'(k-pop|filmi|acoustic|corrido|bollywood|electro swing|cumbia|edm|instrumental|funk|blues|country|lo-fi|punk|folk|jazz|trap|soundtrack|reggae|salsa|bass|rap|soul|anime|ambient|metal|hip hop|country|classical|alt z|rock|r&b|rnb|indie|pop|disco|latin|alternative)'
-    genres_data = songs_data['genre'].str.extract(regex,re.IGNORECASE, expand=False)
+    # genres_data = songs_data['genre'].str.extract(regex,re.IGNORECASE, expand=False)
     all_genres_data = songs_data['genre'].str.extractall(regex,re.IGNORECASE)
     all_genres_data = all_genres_data.rename(columns={0:'given-genre'})
     # print("total: ", songs_data['genre'].count())
     # nonempty = genres_data[~genres_data.isnull()]
-    empty = songs_data['genre'][genres_data.isnull()].dropna()
-    notEmpty = genres_data[~genres_data.isnull()]
-    notEmpty.to_csv('cleaned_genres.csv')
-    print("count of extracted genres: ", notEmpty.count())
+    # empty = songs_data['genre'][genres_data.isnull()].dropna()
+    # notEmpty = genres_data[~genres_data.isnull()]
+    # notEmpty.to_csv('cleaned_genres.csv')
+    # print("count of extracted genres: ", notEmpty.count())
     # print(notEmpty.value_counts())
+
+
+
+
+
     print(all_genres_data.value_counts())
     all_genres_data = all_genres_data.reset_index().set_index('level_0')['given-genre']
-    print("songs identified (with duplicate genres)",all_genres_data.count())
+    # # print("songs identified (with duplicate genres)",all_genres_data.count())
     joined = songs_data.join(all_genres_data, how='inner')
-    # joined = joined[['song_title', 'genre', 'given-genre']]
-    # joined.to_csv('given-genre.csv')
+    
 
+    
+    
     generated_genres = all_genres_data.drop_duplicates().values
     print(generated_genres)
 
@@ -68,10 +75,10 @@ def main():
     print(mean.sort_values('popularity_scores', ascending=False))
 
 
-    melt = joined[['given-genre', 'danceability']].melt()
-    print(melt.dtypes)
-    posthoc = pairwise_tukeyhsd(melt['value'], melt['variable'], alpha=0.05)
-    print(posthoc)
+    # melt = joined[['given-genre', 'danceability']].melt()
+    # print(melt.dtypes)
+    # posthoc = pairwise_tukeyhsd(melt['value'], melt['variable'], alpha=0.05)
+    # print(posthoc)
         
     # print(empty.value_counts().to_csv('empty.csv'))
     # print(notEmpty)
