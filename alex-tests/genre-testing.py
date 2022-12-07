@@ -6,6 +6,20 @@ from scipy import stats
 import matplotlib.pyplot as plt
 from statsmodels.stats.multicomp import pairwise_tukeyhsd
 import re
+import seaborn as sns
+sns.set()
+
+def hexbin(x, y, color, **kwargs):
+    cmap = sns.light_palette(color, as_cmap=True)
+    
+    extent = [0,1,0,100]
+    if(x.name == 'loudness'):
+        extent = [-60, 0, 0, 100]
+
+    if(x.name == 'tempo'):
+        extent =[0, 200, 0, 100] 
+
+    plt.hexbin(x, y, cmap=cmap, gridsize=15,extent=extent, **kwargs)
 
 
 def main():
@@ -13,23 +27,15 @@ def main():
     # songs_data['genre'] = songs_data['genre'].astype('category')
     # print(songs_data)
 
-    numeric_columns = ['danceability', 'energy', 'key', 'loudness', 'mode', 'speechiness',
-               'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
-                'duration_ms', 'time_signature',
-               'popularity_scores']
-               
+    numeric_columns = ['danceability', 'energy', 'loudness', 'speechiness',
+                       'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
+                       'duration_ms',
+                       'popularity_scores']
 
-
-    # clean genres
-    # songs_data['genre'].drop_duplicates().sort_values().to_csv('data_genres.csv')
-    
-    # songs_data['genre'].to_csv('data_genres_orignal.csv')
-    
-    # TODO: make k-pop and pop mutually exclusive
     regex = r'(k-pop|filmi|acoustic|corrido|bollywood|electro swing|cumbia|edm|instrumental|funk|blues|country|lo-fi|punk|folk|jazz|trap|soundtrack|reggae|salsa|bass|rap|soul|anime|ambient|metal|hip hop|country|classical|alt z|rock|r&b|rnb|indie|pop|disco|latin|alternative)'
     # genres_data = songs_data['genre'].str.extract(regex,re.IGNORECASE, expand=False)
-    all_genres_data = songs_data['genre'].str.extractall(regex,re.IGNORECASE)
-    all_genres_data = all_genres_data.rename(columns={0:'given-genre'})
+    all_genres_data = songs_data['genre'].str.extractall(regex, re.IGNORECASE)
+    all_genres_data = all_genres_data.rename(columns={0: 'given-genre'})
     # print("total: ", songs_data['genre'].count())
     # nonempty = genres_data[~genres_data.isnull()]
     # empty = songs_data['genre'][genres_data.isnull()].dropna()
@@ -38,87 +44,41 @@ def main():
     # print("count of extracted genres: ", notEmpty.count())
     # print(notEmpty.value_counts())
 
-
-
-
-
-    print(all_genres_data.value_counts())
-    all_genres_data = all_genres_data.reset_index().set_index('level_0')['given-genre']
-    # # print("songs identified (with duplicate genres)",all_genres_data.count())
+    # print(all_genres_data.value_counts())
+    all_genres_data = all_genres_data.reset_index().set_index('level_0')[
+        'given-genre']
     joined = songs_data.join(all_genres_data, how='inner')
-    
+    # joined['given-genre']= joined['given-genre'].fillna('other')
 
-    
-    
+    # creates csv for ml-test
+    joined.to_csv('genre-data.csv')
+
     generated_genres = all_genres_data.drop_duplicates().values
     print(generated_genres)
+    ##################################
 
-    # generate graphs of each song feature for each genre
-    # for genre in generated_genres:
-    #     genre_songs = joined[joined['given-genre'] == genre]
+
+    for feature in numeric_columns:
         
-    #     popularity = genre_songs['popularity_scores']
-    #     for col in numeric_columns: 
-            
-    #         plt.figure()
-    #         plt.plot(genre_songs[col], popularity, '.')
-    #         # plt.hist(genre_songs[col], 10)
-    #         plt.title('genre: {}. {} vs popularity'.format(genre, col))
-    #         exists = os.path.exists('../images/{}'.format(genre))
-    #         if exists == False:
-    #             os.mkdir('../images/{}'.format(genre))
-            
-    #         plt.savefig('../images/{}/{}'.format(genre,col))
-    #         plt.close()
+        plt.figure()
+        g = sns.FacetGrid(data=joined, col='given-genre', col_wrap=6)
+        g.map(hexbin, feature,'popularity_scores')
+        plt.savefig('../images/{}.png'.format(feature))
+        plt.close()
 
-    mean = joined.groupby('given-genre').mean()
-    print(mean.sort_values('popularity_scores', ascending=False))
+    # mean = joined.groupby('given-genre').mean()
+    # print(mean.sort_values('popularity_scores', ascending=False))
 
-
-    # melt = joined[['given-genre', 'danceability']].melt()
-    # print(melt.dtypes)
-    # posthoc = pairwise_tukeyhsd(melt['value'], melt['variable'], alpha=0.05)
-    # print(posthoc)
-        
-    # print(empty.value_counts().to_csv('empty.csv'))
-    # print(notEmpty)
-    # empty.to_csv('empty.csv')
-    
-  
-    # nonempty = nonempty.rename(columns={0: 'genre'})
-    # test = nonempty.reset_index()
-    # print(test)
-    # gb = test.groupby('genre')['match'].count()
-    # print(gb)
-    # print(gb.sum())
-    # nonempty.sort_values().to_csv('cleaned_genres.csv')
-    # print(genres)
-
-
-
-    # columns = ['danceability', 'energy', 'key', 'loudness', 'mode', 'speechiness',
-    #    'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
-    #    'id', 'duration_ms', 'time_signature', 'song_title',
-    #    'popularity_scores', 'genre']
-
-    # print(songs_data.dtypes)
-    # melt = songs_data[columns].melt()
-    # posthoc = pairwise_tukeyhsd(melt['value'], melt['variable'], alpha=0.05)
-    # print(posthoc)
-
-    # graphs
-    # for col in numeric_columns: 
-    #     plt.figure()
-    #     plt.plot(songs_data[col], songs_data['popularity_scores'], '.')
-    #     plt.title(col)
-    #     plt.savefig('../images/{}.png'.format(col))
-
-    # chi square // contingency 
-    # categorical = pd.cut(songs_data['popularity_scores'], range(0,100, 33), labels=['low', 'medium', 'high'])
-    # # print(categorical)
-
-    # contingency = pd.crosstab(songs_data['genre'], categorical)
+    # chi square test
+    joined['popularity'] = pd.cut(x=joined['popularity_scores'], bins=[
+                                  0, 33, 66, 100], labels=['low', 'medium', 'high'])
+    chi = joined[['given-genre', 'popularity']]
+    contingency = pd.crosstab(chi['given-genre'], chi['popularity'])
     # print(contingency)
+    chi2, p, dof, expected = stats.chi2_contingency(contingency)
+    # print(p)
+    # print(expected)
+
 
 if __name__ == '__main__':
     main()
