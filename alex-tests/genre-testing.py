@@ -55,17 +55,30 @@ def main():
     # joined['given-genre']= joined['given-genre'].fillna('other')
 
     # creates csv for ml-test
-    joined.to_csv('genre-data.csv')
+    # joined.to_csv('genre-data.csv')
 
-    generated_genres = all_genres_data.drop_duplicates().values
-    print(generated_genres)
+    genre_count = joined['given-genre'].value_counts()
+    
+
+    enoughGenres = genre_count[genre_count > 100]
+    enoughGenres = enoughGenres.index.values
+
+    print(enoughGenres)
+    data = joined[joined['given-genre'].isin(enoughGenres)]
+
+    data.to_csv('genre-data.csv')
+    
+
+
+    # generated_genres = all_genres_data.drop_duplicates().values
+    # print(generated_genres)
     ##################################
 
 
     for feature in numeric_columns:
         
         plt.figure()
-        g = sns.FacetGrid(data=joined, col='given-genre', col_wrap=6)
+        g = sns.FacetGrid(data=data, col='given-genre', col_wrap=6)
         g.map(hexbin, feature,'popularity_scores')
         plt.savefig('../images/{}.png'.format(feature))
         plt.close()

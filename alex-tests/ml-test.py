@@ -17,16 +17,17 @@ from sklearn.neural_network import MLPClassifier
 def main():
     data = pd.read_csv('genre-data.csv', index_col=0)
 
-    count = data.value_counts('given-genre')
-    print(count)
-    count = count[count > 100]
-    enoughData = count.index.values
+    # count = data.value_counts('given-genre')
+    # print(count)
+    # count = count[count > 100]
+    # enoughData = count.index.values
 
     # only use data genres that have more than 100 data points
-    data = data[data['given-genre'].isin(enoughData)]
+    # data = data[data['given-genre'].isin(enoughData)]
     y = data['given-genre']
     X = data.drop(['given-genre', 'genre','key', 'mode', 'id', 'song_title', 'popularity_scores', 'time_signature'], axis=1)
     
+    print(X.columns)
     X_train, X_valid, y_train, y_valid = train_test_split(X,y, test_size=0.15)
     model = make_pipeline(
         # StandardScaler(),

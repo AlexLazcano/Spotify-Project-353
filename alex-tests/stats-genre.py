@@ -9,32 +9,26 @@ import re
 import seaborn as sns
 
 sns.set()
-    
+
 
 def main():
     data = pd.read_csv('genre-data.csv', index_col=0)
-    group1 = 'pop'
-    group2 = 'hip hop'
     data = data[['given-genre', 'popularity_scores']]
-   
 
-    genre_count = data['given-genre'].value_counts()
+    # genre_count = data['given-genre'].value_counts()
 
-    enoughGenres = genre_count[genre_count>0]
-    enoughGenres = enoughGenres.index.values
+    # enoughGenres = genre_count[genre_count > 100]
+    # enoughGenres = enoughGenres.index.values
 
-    print(enoughGenres)
-    data = data[data['given-genre'].isin(enoughGenres)]
+    # print(enoughGenres)
+    # data = data[data['given-genre'].isin(enoughGenres)]
     groups = data.groupby('given-genre')
     genres = data['given-genre'].unique()
-
-
-
 
     dfs = []
     dictionary = {
     }
-    for genre in genres: 
+    for genre in genres:
         s = groups.get_group(genre)
         dfs.append(s['popularity_scores'])
         dictionary[genre] = s['popularity_scores']
@@ -54,16 +48,13 @@ def main():
                 pvalue = stats.levene(g, g2).pvalue
                 binary[genres == genre, genres == genre2] = pvalue < 0.05
 
-
-
     plt.figure()
     plt.title('Levene Test, blue = significant difference in variance')
-    sns.heatmap(binary, xticklabels=genres, yticklabels=genres, cmap='Blues', annot=False)
+    sns.heatmap(binary, xticklabels=genres,
+                yticklabels=genres, cmap='Blues', annot=False)
     plt.tight_layout()
     plt.savefig('binary.png')
     plt.close()
-   
-
 
     anova = stats.f_oneway(*dfs)
     print(anova.pvalue)
@@ -73,15 +64,11 @@ def main():
     else:
         print('there is no difference')
 
-
     melt = pd.melt(data)
-   
-    
+
     byGenre = pd.DataFrame(dictionary)
     melt = pd.melt(byGenre).dropna()
-    
 
-   
     posthoc = pairwise_tukeyhsd(melt['value'], melt['variable'], alpha=0.05)
     # print(posthoc)
 
@@ -91,31 +78,44 @@ def main():
     plt.close()
 
     plt.figure()
-    ax = sns.histplot(data=data, x='popularity_scores', hue='given-genre', multiple='dodge', shrink=0.8, bins=10)
+    ax = sns.histplot(data=data, x='popularity_scores',
+                      hue='given-genre', multiple='dodge', shrink=0.8, bins=10)
     sns.move_legend(
-    ax, "lower center",
-    bbox_to_anchor=(.5, 1), ncol=5, title=None, frameon=False, borderaxespad=0.
+        ax, "lower center",
+        bbox_to_anchor=(.5, 1), ncol=5, title=None, frameon=False, borderaxespad=0.
     )
     plt.tight_layout()
     # g.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.savefig('hist.png')
     plt.close()
 
-   
+    plt.figure()
+
+    plt.title('Boxplot of Popularity Scores by Genre with more than 100 songs')
+    ax = sns.boxplot(x='given-genre', y='popularity_scores', data=data, order=data.groupby(
+        'given-genre').mean().sort_values('popularity_scores', ascending=False).index)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=90,
+                       horizontalalignment='right')
+
+    plt.tight_layout()
+    plt.savefig('boxplot.png')
+    plt.close()
+
+    plt.figure()
+
+    plt.title('Pie Chart of Genres with more than 100 songs')
+    genre_count = data['given-genre'].value_counts()
+    # labels with count and name
+    labels = [f'{genre_count[i]} {i}' for i in genre_count.index]
+
+        
+    plt.pie(genre_count, labels=labels, autopct='%1.0f%%')
     
 
-   
+    plt.tight_layout()
+    plt.savefig('pie.png')
+    plt.close()
 
-
-
-    
-    
-
-
-    
-
-    
 
 if __name__ == '__main__':
     main()
-    
