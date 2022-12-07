@@ -19,6 +19,10 @@ def hexbin(x, y, color, **kwargs):
     if(x.name == 'tempo'):
         extent =[0, 200, 0, 100] 
 
+    if(x.name == 'duration_ms'):
+        # extent =[0, 4500000, 0, 100] 
+        extent =[0, 4500000/10, 0, 100] 
+
     plt.hexbin(x, y, cmap=cmap, gridsize=15,extent=extent, **kwargs)
 
 
@@ -65,6 +69,7 @@ def main():
         g.map(hexbin, feature,'popularity_scores')
         plt.savefig('../images/{}.png'.format(feature))
         plt.close()
+        pass
 
     # mean = joined.groupby('given-genre').mean()
     # print(mean.sort_values('popularity_scores', ascending=False))
@@ -76,7 +81,7 @@ def main():
     contingency = pd.crosstab(chi['given-genre'], chi['popularity'])
     # print(contingency)
     chi2, p, dof, expected = stats.chi2_contingency(contingency)
-    # print(p)
+    print(p)
     # print(expected)
 
 
