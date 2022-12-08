@@ -53,7 +53,7 @@ def main():
     sns.heatmap(binary, xticklabels=genres,
                 yticklabels=genres, cmap='Blues', annot=False)
     plt.tight_layout()
-    plt.savefig('binary.png')
+    plt.savefig('levene-genre.png')
     plt.close()
 
     anova = stats.f_oneway(*dfs)
