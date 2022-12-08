@@ -30,7 +30,7 @@ def main():
     }
     for genre in genres:
         s = groups.get_group(genre)
-        dfs.append(s['popularity_scores'])
+        # dfs.append(s['popularity_scores'])
         dictionary[genre] = s['popularity_scores']
 
     # print(dfs)
@@ -56,13 +56,13 @@ def main():
     plt.savefig('levene-genre.png')
     plt.close()
 
-    anova = stats.f_oneway(*dfs)
-    print(anova.pvalue)
+    # anova = stats.f_oneway(*dfs)
+    # print(anova.pvalue)
 
-    if anova.pvalue < 0.05:
-        print('there is a difference')
-    else:
-        print('there is no difference')
+    # if anova.pvalue < 0.05:
+    #     print('there is a difference')
+    # else:
+    #     print('there is no difference')
 
     melt = pd.melt(data)
 
@@ -111,6 +111,29 @@ def main():
         
     plt.pie(genre_count, labels=labels, autopct='%1.0f%%')
     
+ # chi square test
+    data['popularity'] = pd.cut(x=data['popularity_scores'], bins=[
+                                  0, 50, 75, 100], labels=['low', 'medium', 'high'])
+    chi = data[['given-genre', 'popularity']]
+    contingency = pd.crosstab(chi['given-genre'], chi['popularity'])
+    # print(contingency)
+    chi2, p, dof, expected = stats.chi2_contingency(contingency)
+    print(p)
+    # convert to non sciencitific notation of expected values
+    expected = np.array(expected, dtype=int)
+    # print(expected)
+
+    # plot expected values
+    plt.figure()
+    plt.title('Expected Values')
+    sns.heatmap(expected, xticklabels=contingency.columns, yticklabels=contingency.index, annot=True, fmt='d', annot_kws={"size": 8})
+    plt.tight_layout()
+    # text size
+   
+    plt.savefig('expected.png')
+    plt.close()
+    
+
 
     plt.tight_layout()
     plt.savefig('pie.png')

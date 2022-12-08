@@ -87,14 +87,14 @@ def main():
     # mean = joined.groupby('given-genre').mean()
     # print(mean.sort_values('popularity_scores', ascending=False))
 
-    # chi square test
-    joined['popularity'] = pd.cut(x=joined['popularity_scores'], bins=[
-                                  0, 33, 66, 100], labels=['low', 'medium', 'high'])
-    chi = joined[['given-genre', 'popularity']]
-    contingency = pd.crosstab(chi['given-genre'], chi['popularity'])
-    # print(contingency)
-    chi2, p, dof, expected = stats.chi2_contingency(contingency)
-    print(p)
+    # # chi square test
+    # joined['popularity'] = pd.cut(x=joined['popularity_scores'], bins=[
+    #                               0, 50, 75, 100], labels=['low', 'medium', 'high'])
+    # chi = joined[['given-genre', 'popularity']]
+    # contingency = pd.crosstab(chi['given-genre'], chi['popularity'])
+    # # print(contingency)
+    # chi2, p, dof, expected = stats.chi2_contingency(contingency)
+    # print(p)
     # print(expected)
 
 
