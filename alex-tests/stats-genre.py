@@ -110,7 +110,10 @@ def main():
 
         
     plt.pie(genre_count, labels=labels, autopct='%1.0f%%')
-    
+    plt.tight_layout()
+    plt.savefig('pie.png')
+    plt.close()
+
  # chi square test
     data['popularity'] = pd.cut(x=data['popularity_scores'], bins=[
                                   0, 50, 75, 100], labels=['low', 'medium', 'high'])
@@ -135,10 +138,7 @@ def main():
     
 
 
-    plt.tight_layout()
-    plt.savefig('pie.png')
-    plt.close()
-
+   
 
 if __name__ == '__main__':
     main()
