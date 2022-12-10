@@ -32,7 +32,7 @@ python3 ml-genre.py
 
 <br>
 <br>
-The `analysis-classifiers` folder contains the following scripts and notebooks:
+The <code>analysis-classifiers</code> folder contains the following scripts and notebooks:
 
 - **analysis.ipynb**: Conducts an exploratory analysis by creating data visualizations such as scatterplots, bar plots, histograms, box plots, and a correlation chart                       to understand relationships between variables. 
 - **classifiers.ipynb**: Normalizes datasets using MinMaxScaler and StandardScaler and uses RFE for feature selection to improve results.
