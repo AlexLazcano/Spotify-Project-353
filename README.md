@@ -1,34 +1,33 @@
+# Readme
 
-Data: 
+This repository contains data, scripts, and notebooks for analyzing playlist data and generating genre classification models.
 
-generate_track_data.py: is the file while generated playlist data which converts to song data to turn into csvs
-- but requires Daniel Tham's API key/secret API key to Spotify 
+## Data
 
-clean_track_data.ipynb: cleaned the playlists-v4.csv to create the playlists-v4-final.csv
+The following data files are included in this repository:
 
+- **playlists-v4.csv**: Raw playlist data, generated using the `generate_track_data.py` script. This script uses Daniel Tham's Spotify API key, so the data file is not included in this repository.
+- **playlists-v4-final.csv**: Cleaned version of the `playlists-v4.csv` file, generated using the `clean_track_data.ipynb` Jupyter notebook.
 
-Analysis Scripts and Python Notebooks:
+## Analysis Scripts and Python Notebooks
 
-in genre-testing: 
-genre-generation.py - generates genre data in genre-data.csv. Used in ml-genre.py and in stats-genre.
+The `genre-testing` folder contains the following scripts and notebooks:
+
+- **genre-generation.py**: Generates genre data in `genre-data.csv`. This file is used in `ml-genre.py` and `stats-genre.py`.
+- **genre-testing.py**: Main script for testing genre classification models.
+- **stats-genre.py**: Performs statistical analysis of genre data.
+- **ml-genre.py**: Contains machine learning models for genre classification.
+
+To run the scripts, use the following commands:
+
+<code>
 python3 genre-testing.py
-
-stats-genre.py - statistical analysis of genre data.
 python3 stats-genre.py
-
-ml-genre.py - machine learning models for genre data.
 python3 ml-genre.py
+</code>
 
-Data Analysis & Classifier Models:
+The `analyse.ipynp` and `classifiers.ipynp` notebooks contain further analysis of the data, including exploration with scatterplots, bar plots, histograms, box plots, and a correlation chart. The `classifiers.ipynp` notebook also includes normalization of datasets using `MinMaxScaler` and `StandardScaler`, feature selection with `RFE`, and construction of classifier models using `RandomForestClassifier`, `KNeighborsClassifier`, `DecisionTreeClassifier`, `GaussianNB`, and `SVC`.
 
-analyse.ipynp - exploratory analysis with scatterplots, bar plots, histograms, box plots, and a correlation chart.
+## Images
 
-classifiers.ipynp - normalization of datasets using MinMaxScaler and StandardScaler and usage of RFE for feature selection to improve results.
-                  - construction a model using Random Forest, K-Nearest Neighbor, Decision Tree Classifier, Gaussian Naive-Bayes, and SVM.
-                  - Grid-Search on Random Forest, Decision Tree and K-Nearest Neighbors.
-                  - results using cross-validation.
-
-
-
-images: 
-images used in the report that were created in the genre-testing folder. 
+The `images` folder contains images used in the report, which were generated using the scripts in the `genre-testing` folder.
