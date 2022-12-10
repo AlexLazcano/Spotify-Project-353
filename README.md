@@ -30,7 +30,8 @@ python3 stats-genre.py
 python3 ml-genre.py
 </code>
 
-<br/>
+<br>
+<br>
 The `analysis-classifiers` folder contains the following scripts and notebooks:
 
 - **analysis.ipynb**: Conducts an exploratory analysis by creating data visualizations such as scatterplots, bar plots, histograms, box plots, and a correlation chart                       to understand relationships between variables. 
