@@ -1,5 +1,5 @@
 
-data: 
+Data: 
 
 generate_track_data.py: is the file while generated playlist data which converts to song data to turn into csvs
 - but requires Daniel Tham's API key/secret API key to Spotify 
@@ -19,7 +19,7 @@ python3 stats-genre.py
 ml-genre.py - machine learning models for genre data.
 python3 ml-genre.py
 
-in data analysis & calssifier models
+Data Analysis & Classifier Models:
 
 analyse.ipynp - exploratory analysis with scatterplots, bar plots, histograms, box plots, and a correlation chart.
 
