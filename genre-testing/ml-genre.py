@@ -99,7 +99,7 @@ def main():
     plt.ylim(0, 1)
     plt.ylabel('Precision')
     plt.tight_layout()
-    # plt.savefig('precision.png')
+    plt.savefig('precision.png')
 
     recall = pd.concat([kn['recall'], rf['recall'], mlp['recall']], axis=1)
     recall.columns = ['KNeighborsClassifier', 'RandomForestClassifier', 'MLPClassifier']
@@ -111,7 +111,7 @@ def main():
     plt.ylim(0, 1)
     plt.ylabel('Recall')
     plt.tight_layout()
-    # plt.savefig('recall.png')
+    plt.savefig('recall.png')
 
 
     f1 = pd.concat([kn['f1-score'], rf['f1-score'], mlp['f1-score']], axis=1)
@@ -125,7 +125,7 @@ def main():
     plt.ylim(0, 1)
     plt.ylabel('F1 Score')
     plt.tight_layout()
-    # plt.savefig('f1.png')
+    plt.savefig('f1.png')
 
 
    
