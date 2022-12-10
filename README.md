@@ -22,10 +22,10 @@ To run the scripts, use the following commands:
 
 <code>
 python3 genre-testing.py
-</code>
+</code><br>
 <code>
 python3 stats-genre.py
-</code>
+</code><br>
 <code>
 python3 ml-genre.py
 </code>
