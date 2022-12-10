@@ -1,5 +1,10 @@
 
-Data Generation: 
+data: 
+
+generate_track_data.py: is the file while generated playlist data which converts to song data to turn into csvs
+- but requires Daniel Tham's API key/secret API key to Spotify 
+
+clean_track_data.ipynb: cleaned the playlists-v4.csv to create the playlists-v4-final.csv
 
 
 Analysis Scripts and Python Notebooks:
@@ -13,10 +18,3 @@ python3 stats-genre.py
 
 ml-genre.py - machine learning models for genre data.
 python3 ml-genre.py
-
-Analyse.ipynb - exploratory analysis by creating data visualizations such as scatterplots, bar plots, histograms, box plots, and a correlation chart to understand relationships between variables.
-
-Classifiers.ipynb - normalizing with MinMaxScaler and StandardScaler and RFE for feature selection to improve results. 
-                  - construction of a model using Random Forest, K-Nearest Neighbor, Decision Tree Classifier, Gaussian Naive-Bayes, and SVM. 
-                  - grid-Search on Random Forest, Decision Tree and K-Nearest Neighbors and results through cross-validation using cross-validation .
-
