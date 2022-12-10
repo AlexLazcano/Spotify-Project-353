@@ -4,8 +4,8 @@ Data Generation:
 
 Analysis Scripts and Python Notebooks:
 
-in alex-tests: 
-genre-testing.py - generates genre data in genre-data.csv. Used in ml-genre.py and in stats-genre.
+in genre-testing: 
+genre-generation.py - generates genre data in genre-data.csv. Used in ml-genre.py and in stats-genre.
 python3 genre-testing.py
 
 stats-genre.py - statistical analysis of genre data.
