@@ -26,7 +26,13 @@ python3 stats-genre.py
 python3 ml-genre.py
 </code>
 
-The `analysis.ipynp` and `classifiers.ipynp` notebooks contain further analysis of the data, including exploration with scatterplots, bar plots, histograms, box plots, and a correlation chart. The `classifiers.ipynp` notebook also includes normalization of datasets using `MinMaxScaler` and `StandardScaler`, feature selection with `RFE`, and construction of classifier models using `RandomForestClassifier`, `KNeighborsClassifier`, `DecisionTreeClassifier`, `GaussianNB`, and `SVC`.
+The `analysis-classifiers` folder contains the following scripts and notebooks:
+
+- **analysis.ipynb**: Conducts an exploratory analysis by creating data visualizations such as scatterplots, bar plots, histograms, box plots, and a correlation chart                       to understand relationships between variables. 
+- **classifiers.ipynb**: Normalizes datasets using MinMaxScaler and StandardScaler and uses RFE for feature selection to improve results.
+                          Constructs a model using Random Forest, K-Nearest Neighbor, Decision Tree Classifier, Gaussian Naive-Bayes, and SVM.  
+                          Performs Grid-Search on Random Forest, Decision Tree and K-Nearest Neighbors as they proved to have the highest accuracy and obtained results                           using cross-validation .
+
 
 ## Images
 
