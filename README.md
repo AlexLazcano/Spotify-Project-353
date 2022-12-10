@@ -18,3 +18,7 @@ python3 stats-genre.py
 
 ml-genre.py - machine learning models for genre data.
 python3 ml-genre.py
+
+
+images: 
+images used in the report that were created in the genre-testing folder. 
