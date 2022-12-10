@@ -19,10 +19,14 @@ python3 stats-genre.py
 ml-genre.py - machine learning models for genre data.
 python3 ml-genre.py
 
+in data analysis & calssifier models
+
+analyse.ipynp - exploratory analysis with scatterplots, bar plots, histograms, box plots, and a correlation chart.
+
 classifiers.ipynp - normalization of datasets using MinMaxScaler and StandardScaler and usage of RFE for feature selection to improve results.
                   - construction a model using Random Forest, K-Nearest Neighbor, Decision Tree Classifier, Gaussian Naive-Bayes, and SVM.
-                  - Grid-Search on Random Forest, Decision Tree and K-Nearest Neighbors 
-                  - results using cross-validation 
+                  - Grid-Search on Random Forest, Decision Tree and K-Nearest Neighbors.
+                  - results using cross-validation.
 
 
 
